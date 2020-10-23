@@ -180,7 +180,8 @@ public class CanvasApiFactory {
         readerMap.put(SisImportReader.class, SisImportImpl.class);
         readerMap.put(SelectiveDataReader.class, SelectiveDataImpl.class);
         readerMap.put(MigrationIssueReader.class, MigrationIssueImpl.class);
-		
+        readerMap.put(CourseAuditLogReader.class, CourseAuditLogImpl.class);
+
         writerMap.put(AccountWriter.class, AccountImpl.class);
         writerMap.put(AssignmentOverrideWriter.class, AssignmentOverrideImpl.class);
         writerMap.put(AdminWriter.class, AdminImpl.class);
