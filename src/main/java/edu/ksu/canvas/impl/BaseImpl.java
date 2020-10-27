@@ -70,7 +70,7 @@ public abstract class BaseImpl<T, READERTYPE extends CanvasReader, WRITERTYPE ex
             LOG.warn("Error " + response.getResponseCode() + "on GET from url " + url);
             throw new IOException("Error accessing url " + url);
         }
-        return responseParser.parseToObject(objectType(), response);
+        return parseToObject(response);
     }
 
     protected List<T> getListFromCanvas(String url) throws IOException {
@@ -81,6 +81,17 @@ public abstract class BaseImpl<T, READERTYPE extends CanvasReader, WRITERTYPE ex
         List<Response> responses = canvasMessenger.getFromCanvas(oauthToken, url, consumer);
         responseCallback = null;
         return parseListOfResponses(responses);
+    }
+
+    // Every page is an object which contains the list.
+    protected List<T> getObjectListFromCanvas(String url) throws IOException {
+        Consumer<Response> consumer = null;
+        if (responseCallback != null) {
+            consumer = response -> responseCallback.accept(responseParser.parseToList(listType(), response));
+        }
+        List<Response> responses = canvasMessenger.getFromCanvas(oauthToken, url, consumer);
+        responseCallback = null;
+        return parseObjectOfResponses(responses);
     }
 
     @Override
@@ -171,6 +182,11 @@ public abstract class BaseImpl<T, READERTYPE extends CanvasReader, WRITERTYPE ex
         return responseParser.parseToList(listType(), response);
     }
 
+    // Parses an object using GSON.  
+    private Optional<T> parseToObject(Response response) {
+        return responseParser.parseToObject(objectType(), response);
+    }
+
     /*
      * Subclasses should return the type of a list that will be parsed by gson when using call that returns lists.
      * For example, CourseReaderImpl returns 'TypeToken<List<Course>>(){}.getType();'
@@ -190,4 +206,16 @@ public abstract class BaseImpl<T, READERTYPE extends CanvasReader, WRITERTYPE ex
                 .flatMap(Collection::stream)
                 .collect(Collectors.toList());
     }
+
+    protected List<T> parseObjectOfResponses(List<Response> responses) {
+        List<T> objectList = new ArrayList<T>();
+        responses.forEach(response -> {
+            Optional<T> responseOptional = parseToObject(response);
+            if (responseOptional.isPresent()) {
+                objectList.add(responseOptional.get());
+            }
+        });
+        return objectList;
+    }
+
 }

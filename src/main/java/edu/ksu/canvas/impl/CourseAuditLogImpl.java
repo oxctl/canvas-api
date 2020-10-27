@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,10 +25,10 @@ public class CourseAuditLogImpl extends BaseImpl<CourseAuditLog, CourseAuditLogR
     }
 
     @Override
-    public Optional<CourseAuditLog> getCourseAuditLog(String courseId) throws IOException {
+    public List<CourseAuditLog> getCourseAuditLog(String courseId) throws IOException {
         LOG.debug(String.format("Listing course events for course %s", courseId));
         final String url = buildCanvasUrl(String.format("audit/course/courses/%s", courseId), Collections.emptyMap());
-        return getFromCanvas(url);
+        return getObjectListFromCanvas(url);
     }
 
     @Override
