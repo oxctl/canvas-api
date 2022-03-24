@@ -122,4 +122,24 @@ public class CreateConversationOptions extends BaseOptions {
         addSingleItem("mode", mode.toString());
         return this;
     }
+    
+    /**
+     * If the message is going to be private
+     * @param isPrivate if the message is private
+     * @return This object to allow adding more options
+     */
+    public CreateConversationOptions privateMessage(Boolean isPrivate) {
+        addSingleItem("private", isPrivate.toString());
+        return this;
+    }
+    
+    /**
+     * Get suscribed to the conversation or not
+     * @param suscribed if is going to be suscribed to the conversation
+     * @return This object to allow adding more options
+     */
+    public CreateConversationOptions suscribed(Boolean suscribed) {
+        addSingleItem("suscribed", suscribed.toString());
+        return this;
+    }
 }
