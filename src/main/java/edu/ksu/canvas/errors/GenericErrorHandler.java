@@ -17,10 +17,14 @@ public class GenericErrorHandler implements ErrorHandler {
 
     private Pattern coursePattern = Pattern.compile("/api/v1/accounts/(\\d+|\\w+:\\w+)/courses");
     private Pattern loginPattern = Pattern.compile("/api/v1/accounts/\\d+/logins");
+    private Pattern sectionPattern = Pattern.compile("/api/v1/courses/(\\d+|\\w+:\\w+)/sections");
+    private Pattern accountPattern = Pattern.compile("/api/v1/accounts/(\\d+|\\w+:\\w+)/sub_accounts");
 
     @Override
     public boolean shouldHandle(HttpRequest httpRequest, HttpResponse httpResponse) {
         return (coursePattern.matcher(httpRequest.getRequestLine().getUri()).find() ||
+                sectionPattern.matcher(httpRequest.getRequestLine().getUri()).find() ||
+                accountPattern.matcher(httpRequest.getRequestLine().getUri()).find() ||
                 loginPattern.matcher(httpRequest.getRequestLine().getUri()).find()) &&
                 httpResponse.getStatusLine().getStatusCode() == 400 &&
                 httpResponse.getEntity().getContentType().getValue().contains("application/json");
@@ -33,7 +37,7 @@ public class GenericErrorHandler implements ErrorHandler {
             String entityString = EntityUtils.toString(httpResponse.getEntity());
             GenericErrorResponse response = gson.fromJson(entityString, GenericErrorResponse.class);
             if (response.getErrors() != null) {
-                throw new CanvasException("Failed to create user.", httpRequest.getRequestLine().getUri(), response);
+                throw new CanvasException("Failed to create entity.", httpRequest.getRequestLine().getUri(), response);
             }
         } catch (IOException e) {
             // Ignore.
