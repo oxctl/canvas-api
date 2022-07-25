@@ -162,6 +162,7 @@ public class CanvasApiFactory {
         readerMap.put(QuizSubmissionReader.class, QuizSubmissionImpl.class);
         readerMap.put(SectionReader.class, SectionsImpl.class);
         readerMap.put(UserReader.class, UserImpl.class);
+        readerMap.put(ProfileReader.class, ProfileImpl.class);
         readerMap.put(PageReader.class, PageImpl.class);
         readerMap.put(EnrollmentTermReader.class, EnrollmentTermImpl.class);
         readerMap.put(SubmissionReader.class, SubmissionImpl.class);

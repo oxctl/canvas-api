@@ -1,0 +1,20 @@
+{
+	"id": 1111,
+	"name": "Student Number 1",
+	"sortable_name": "Student, One",
+	"short_name": "StOne",
+	"sis_user_id": "Stu001",
+	"login_id": "student_01@numbers.example.com",
+	"avatar_url": "https://en.gravatar.com/avatar/d8cb8c8cd40ddf0cd05241443a591868?s=80&r=g",
+	"integration_id": null,
+	"pronouns": null,
+	"title": null,
+	"bio": "Fake bio",
+	"primary_email": "student_01@numbers.example.com",
+	"time_zone": "Europe/Madrid",
+	"locale": null,
+	"effective_locale": "es",
+	"calendar": null,
+	"lti_user_id": "1111111",
+	"k5_user": false
+}
