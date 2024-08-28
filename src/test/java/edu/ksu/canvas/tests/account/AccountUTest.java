@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import edu.ksu.canvas.interfaces.AccountWriter;
+import edu.ksu.canvas.model.User;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -22,16 +24,19 @@ import edu.ksu.canvas.requestOptions.ListAccountOptions;
 import edu.ksu.canvas.requestOptions.ListAccountOptions.Include;
 import edu.ksu.canvas.util.CanvasURLBuilder;
 
-public class AccountReaderUTest extends CanvasTestBase {
+public class AccountUTest extends CanvasTestBase {
     @Autowired
     private FakeRestClient fakeRestClient;
     private AccountReader accountReader;
+    private AccountWriter accountWriter;
 
     private static final String ROOT_ACCOUNT_ID = "1";
 
     @Before
     public void setupReader() {
         accountReader = new AccountImpl(baseUrl, apiVersion, SOME_OAUTH_TOKEN, fakeRestClient, SOME_CONNECT_TIMEOUT,
+                SOME_READ_TIMEOUT, DEFAULT_PAGINATION_PAGE_SIZE, false);
+        accountWriter = new AccountImpl(baseUrl, apiVersion, SOME_OAUTH_TOKEN, fakeRestClient, SOME_CONNECT_TIMEOUT,
                 SOME_READ_TIMEOUT, DEFAULT_PAGINATION_PAGE_SIZE, false);
     }
 
@@ -61,6 +66,18 @@ public class AccountReaderUTest extends CanvasTestBase {
         List<Account> accountList = accountReader.listAccounts(new ListAccountOptions().includes(Arrays.asList(Include.LTI_GUID)));
         Account account = accountList.get(0);
         Assert.assertEquals("f22a4332-3d40-427b-846d-9bc1fa5ab9b4.canvas.example.edu", account.getLtiGuid());
+    }
+
+    @Test
+    public void testRestoreUserByUserId() throws Exception {
+        String accountId = "1";
+        int userId = 20;
+        String url = baseUrl + "/api/v1/accounts/1/users/" + String.valueOf(userId) + "/restore";
+        fakeRestClient.addSuccessResponse(url, "SampleJson/user/UserById.json");
+        Optional<User> result = accountWriter.restoreUser(accountId, String.valueOf(userId));
+        User user = result.get();
+        Assert.assertEquals(userId, user.getId());
+        Assert.assertEquals("2011-05-30T16:45:25Z", user.getCreatedAt().toString());
     }
 
 }

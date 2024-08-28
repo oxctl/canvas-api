@@ -1,5 +1,6 @@
 package edu.ksu.canvas.interfaces;
 
+import edu.ksu.canvas.exception.InvalidOauthTokenException;
 import edu.ksu.canvas.model.Account;
 import edu.ksu.canvas.model.User;
 
@@ -39,4 +40,14 @@ public interface AccountWriter extends CanvasWriter<Account, AccountWriter> {
      * @throws IOException When there is an error communicating with Canvas
      */
      User deleteUser(String userId, String accountId) throws IOException;
+
+    /**
+     * Restore a deleted user in Canvas
+     * @param accountId account id for restoring user into an account
+     * @param userId user id for restoring user
+     * @return The newly restored user
+     * @throws InvalidOauthTokenException When the supplied OAuth token is not valid
+     * @throws IOException When there is an error communicating with Canvas
+     */
+    Optional<User> restoreUser (String accountId, String userId) throws InvalidOauthTokenException, IOException;
 }

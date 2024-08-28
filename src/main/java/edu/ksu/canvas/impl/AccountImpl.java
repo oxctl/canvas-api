@@ -112,4 +112,12 @@ public class AccountImpl extends BaseImpl<Account, AccountReader, AccountWriter>
         Optional<DeletedUserResponse> responseParsed = responseParser.parseToObject(DeletedUserResponse.class, response);
         return responseParsed.map(DeletedUserResponse::getUser).orElse(null);
     }
+
+    @Override
+    public Optional<User> restoreUser(String accountId, String userIdentifier) throws IOException {
+        LOG.debug("Restoring user {}", userIdentifier);
+        String url = buildCanvasUrl("accounts/" + accountId + "/users/" + userIdentifier + "/restore", Collections.emptyMap());
+        Response response = canvasMessenger.putToCanvas(oauthToken, url,  Collections.emptyMap());
+        return responseParser.parseToObject(User.class, response);
+    }
 }
