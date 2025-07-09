@@ -59,6 +59,7 @@ public class Assignment extends BaseCanvasModel implements Serializable{
     private Boolean omitFromFinalGrade;
     private List<String> assignmentVisibility;
     private Boolean postManually;
+    private Boolean hideInGradebook;
 
     public Integer getId() {
         return id;
@@ -425,6 +426,15 @@ public class Assignment extends BaseCanvasModel implements Serializable{
 
     public void setAssignmentVisibility(List<String> assignmentVisibility) {
         this.assignmentVisibility = assignmentVisibility;
+    }
+    
+    @CanvasField(postKey = "hide_in_gradebook")
+    public Boolean isHideInGradebook() {
+        return hideInGradebook;
+    }
+
+    public void setHideInGradebook(Boolean hideInGradebook) {
+        this.hideInGradebook = hideInGradebook;
     }
 
     public class ExternalToolTagAttribute implements Serializable {
