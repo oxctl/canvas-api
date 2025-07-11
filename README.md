@@ -103,11 +103,12 @@ This project is deployed to the central repository, once ready to release you ca
 
     mvn -Prelease release:clean release:prepare
     
-then if that completes successfully a release bundle can be pushed to the staging area of the Sonatype OSS repository with:
+then if that completes successfully a release bundle can be pushed to the central repository with:
 
     mvn -Prelease release:perform
     
-We don't automatically close the staged artifacts so after checking that the files are ok you can login to the [repository](https://oss.sonatype.org/) and release it.
+This should upload the bundle and then wait for the central repository to process the upload. This currently takes about
+15 minutes to complete.
 
 After releasing to maven central create a new release in GitHub and use the feature to automatically build the changelog of everything that's changed.
 
