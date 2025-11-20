@@ -8,11 +8,17 @@ import org.apache.commons.lang3.StringUtils;
  * See <a href="https://canvas.instructure.com/doc/api/submissions.html#method.submissions.create">Submit an Assignment</a>
  * for more details.
  */
-public final class SubmissionOptions extends BaseOptions {
+public class SubmissionOptions extends BaseOptions {
     private final String courseId;
     private final String assignmentId;
 
     public SubmissionOptions(String courseId, String assignmentId) {
+        if (StringUtils.isBlank(courseId)) {
+            throw new IllegalArgumentException("courseId must not be null or blank");
+        }
+        if (StringUtils.isBlank(assignmentId)) {
+            throw new IllegalArgumentException("assignmentId must not be null or blank");
+        }
         this.courseId = courseId;
         this.assignmentId = assignmentId;
     }
