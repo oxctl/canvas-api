@@ -3,7 +3,9 @@ package edu.ksu.canvas.interfaces;
 
 import edu.ksu.canvas.model.Progress;
 import edu.ksu.canvas.model.assignment.Submission;
+import edu.ksu.canvas.net.Response;
 import edu.ksu.canvas.requestOptions.MultipleSubmissionsOptions;
+import edu.ksu.canvas.requestOptions.SubmissionOptions;
 
 import java.io.IOException;
 import java.util.Optional;
@@ -29,4 +31,14 @@ public interface SubmissionWriter extends CanvasWriter<Submission, SubmissionWri
      * @throws             IOException If there is an error talking to Canvas
      */
     public Optional<Progress> gradeMultipleSubmissionsByCourse(MultipleSubmissionsOptions options) throws IOException;
+
+    /**
+     * Submit an assignment on behalf of a student.
+     *
+     * @param options      Parameters object containing parameters such as: course_id, assignment_id,
+     *                     submission_type, file_ids, body, url, etc.
+     * @return             The response from Canvas
+     * @throws             IOException If there is an error talking to Canvas
+     */
+    Response submitAssignment(SubmissionOptions options) throws IOException;
 }

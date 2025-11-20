@@ -125,6 +125,10 @@ public abstract class BaseImpl<T, READERTYPE extends CanvasReader, WRITERTYPE ex
         return UrlEscapers.urlPathSegmentEscaper().escape(value);
     }
 
+    protected String buildCanvasUrl(String canvasMethod) {
+        return buildCanvasUrl(canvasMethod, Collections.emptyMap());
+    }
+
     protected String buildCanvasUrl(String canvasMethod, Map<String, List<String>> parameters) {
         Map<String, List<String>> allParameters = new HashMap<>();
         allParameters.putAll(parameters);
