@@ -1,5 +1,7 @@
 package edu.ksu.canvas.requestOptions;
 
+import org.apache.commons.lang3.StringUtils;
+
 /**
  * Submission options to submit an assignment
  * <p>
