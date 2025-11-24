@@ -6,6 +6,7 @@ import java.lang.reflect.Type;
 import java.util.List;
 import java.util.Optional;
 
+import edu.ksu.canvas.requestOptions.SubmissionOptions;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -141,4 +142,11 @@ public class SubmissionImpl extends BaseImpl<Submission, SubmissionReader, Submi
         return Submission.class;
     }
 
+    @Override
+    public Response submitAssignment(SubmissionOptions options) throws IOException {
+        String url = buildCanvasUrl("courses/" + options.getCourseId() + "/assignments/" + options.getAssignmentId() + "/submissions");
+
+        LOG.debug(String.format("Submitting assignment: POST %s", url));
+        return canvasMessenger.sendToCanvas(oauthToken, url, options.getOptionsMap());
+    }
 }
