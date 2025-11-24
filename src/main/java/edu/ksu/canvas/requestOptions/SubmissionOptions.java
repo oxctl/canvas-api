@@ -1,9 +1,7 @@
 package edu.ksu.canvas.requestOptions;
 
-import org.apache.commons.lang3.StringUtils;
-
 /**
- * Submission options to submit an assignment on behalf of a user.
+ * Submission options to submit an assignment
  * <p>
  * See <a href="https://canvas.instructure.com/doc/api/submissions.html#method.submissions.create">Submit an Assignment</a>
  * for more details.
@@ -39,12 +37,4 @@ public final class SubmissionOptions extends BaseOptions {
 
     public String getCourseId() { return courseId; }
     public String getAssignmentId() { return assignmentId; }
-
-    public SubmissionOptions useAssignmentLaunchUrl(String canvasBaseUrl) {
-        if (canvasBaseUrl == null || StringUtils.isBlank(canvasBaseUrl)) {
-            throw new IllegalArgumentException("canvasBaseUrl must not be blank");
-        }
-        String launchUrl = canvasBaseUrl + "/courses/" + courseId + "/assignments/" + assignmentId;
-        return this.url(launchUrl);
-    }
 }

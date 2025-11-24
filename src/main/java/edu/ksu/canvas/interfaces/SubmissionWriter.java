@@ -33,7 +33,7 @@ public interface SubmissionWriter extends CanvasWriter<Submission, SubmissionWri
     public Optional<Progress> gradeMultipleSubmissionsByCourse(MultipleSubmissionsOptions options) throws IOException;
 
     /**
-     * Submit an assignment on behalf of a student.
+     * Submit an assignment
      *
      * @param options      Parameters object containing parameters such as: course_id, assignment_id,
      *                     submission_type, file_ids, body, url, etc.
