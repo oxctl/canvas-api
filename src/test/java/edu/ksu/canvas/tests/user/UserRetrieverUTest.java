@@ -7,7 +7,6 @@ import edu.ksu.canvas.interfaces.UserReader;
 import edu.ksu.canvas.interfaces.UserWriter;
 import edu.ksu.canvas.model.User;
 import edu.ksu.canvas.net.FakeRestClient;
-import edu.ksu.canvas.net.Response;
 import edu.ksu.canvas.requestOptions.GetUsersInAccountOptions;
 import edu.ksu.canvas.requestOptions.GetUsersInCourseOptions;
 import edu.ksu.canvas.util.CanvasURLBuilder;
@@ -38,9 +37,6 @@ public class UserRetrieverUTest extends CanvasTestBase {
 
     @Test
     public void testListCourseQuizzes() throws Exception {
-        Response notErroredResponse = new Response();
-        notErroredResponse.setErrorHappened(false);
-        notErroredResponse.setResponseCode(200);
         String url = CanvasURLBuilder.buildCanvasUrl(baseUrl, apiVersion,
                 "courses/" + someCourseId + "/users", Collections.emptyMap());
         fakeRestClient.addSuccessResponse(url, "SampleJson/user/UserList.json");
@@ -54,9 +50,6 @@ public class UserRetrieverUTest extends CanvasTestBase {
     @Test
      public void testSisUserMasqueradeListCourseQuizzes() throws Exception {
         String someUserId = "8991123123";
-        Response notErroredResponse = new Response();
-        notErroredResponse.setErrorHappened(false);
-        notErroredResponse.setResponseCode(200);
         String url = baseUrl + "/api/v1/courses/" + someCourseId + "/users?as_user_id="
                 + CanvasConstants.MASQUERADE_SIS_USER + ":" + someUserId;
         fakeRestClient.addSuccessResponse(url, "SampleJson/user/UserList.json");
@@ -70,9 +63,6 @@ public class UserRetrieverUTest extends CanvasTestBase {
     @Test
     public void testCanvasUserMasqueradeListCourseQuizzes() throws Exception {
         String someUserId = "8991123123";
-        Response notErroredResponse = new Response();
-        notErroredResponse.setErrorHappened(false);
-        notErroredResponse.setResponseCode(200);
         String url = baseUrl + "/api/v1/courses/" + someCourseId + "/users?as_user_id=" + someUserId;
         fakeRestClient.addSuccessResponse(url, "SampleJson/user/UserList.json");
 
@@ -85,9 +75,6 @@ public class UserRetrieverUTest extends CanvasTestBase {
     @Test
     public void testLtiUserMasqueradeListCourseQuizzes() throws Exception {
         String someUserId = "8991123123";
-        Response notErroredResponse = new Response();
-        notErroredResponse.setErrorHappened(false);
-        notErroredResponse.setResponseCode(200);
         String url = baseUrl + "/api/v1/courses/" + someCourseId + "/users?as_user_id=" + CanvasConstants.MASQUERADE_LTI_USER + ":" + someUserId;
         fakeRestClient.addSuccessResponse(url, "SampleJson/user/UserList.json");
 
