@@ -83,6 +83,21 @@ public class UserRetrieverUTest extends CanvasTestBase {
     }
 
     @Test
+    public void testLtiUserMasqueradeListCourseQuizzes() throws Exception {
+        String someUserId = "8991123123";
+        Response notErroredResponse = new Response();
+        notErroredResponse.setErrorHappened(false);
+        notErroredResponse.setResponseCode(200);
+        String url = baseUrl + "/api/v1/courses/" + someCourseId + "/users?as_user_id=" + CanvasConstants.MASQUERADE_LTI_USER + ":" + someUserId;
+        fakeRestClient.addSuccessResponse(url, "SampleJson/user/UserList.json");
+
+        List<User> users = userReader.readAsLtiUser(someUserId).getUsersInCourse(new GetUsersInCourseOptions(someCourseId));
+        Assert.assertEquals(2, users.size());
+        Assert.assertTrue(users.stream().map(User::getName).filter("Student Number 1"::equals).findFirst().isPresent());
+        Assert.assertTrue(users.stream().map(User::getName).filter("Student Number 2"::equals).findFirst().isPresent());
+    }
+
+    @Test
     public void testShowUserDetailsByUserId() throws Exception {
         int userId = 20;
         String url = baseUrl + "/api/v1/users/" + String.valueOf(userId);

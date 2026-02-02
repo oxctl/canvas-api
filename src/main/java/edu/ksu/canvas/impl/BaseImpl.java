@@ -98,6 +98,11 @@ public abstract class BaseImpl<T, READERTYPE extends CanvasReader, WRITERTYPE ex
     public READERTYPE readAsSisUser(String masqueradeAs) {
         return (READERTYPE) readAsUser(masqueradeAs, CanvasConstants.MASQUERADE_SIS_USER);
     }
+    
+    @Override
+    public READERTYPE readAsLtiUser(String masqueradeAs) {
+        return (READERTYPE) readAsUser(masqueradeAs, CanvasConstants.MASQUERADE_LTI_USER);
+    }
 
     private READERTYPE readAsUser(String masqueradeAs, String masqueradeType){
         this.masqueradeAs = masqueradeAs;
@@ -113,6 +118,11 @@ public abstract class BaseImpl<T, READERTYPE extends CanvasReader, WRITERTYPE ex
     @Override
     public WRITERTYPE writeAsSisUser(String masqueradeAs) {
         return (WRITERTYPE) writeAsUser(masqueradeAs, CanvasConstants.MASQUERADE_SIS_USER);
+    }
+    
+    @Override
+    public WRITERTYPE writeAsLtiUser(String masqueradeAs) {
+        return (WRITERTYPE) writeAsUser(masqueradeAs, CanvasConstants.MASQUERADE_LTI_USER);
     }
 
     private WRITERTYPE writeAsUser(String masqueradeAs, String masqueradeType){
@@ -139,6 +149,8 @@ public abstract class BaseImpl<T, READERTYPE extends CanvasReader, WRITERTYPE ex
                 allParameters.put("as_user_id", Arrays.asList(masqueradeAs));
             } else if(CanvasConstants.MASQUERADE_SIS_USER.equals(masqueradeType)) {
                 allParameters.put("as_user_id", Arrays.asList("sis_user_id:" + masqueradeAs));
+            } else if(CanvasConstants.MASQUERADE_LTI_USER.equals(masqueradeType)) {
+                allParameters.put("as_user_id", Arrays.asList("lti_1_3_id:" + masqueradeAs));
             }
             //Since masquerading options are added on a per-call basis, blank them out after using them for this call
             masqueradeAs = null;
