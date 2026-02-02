@@ -60,6 +60,9 @@ public class Assignment extends BaseCanvasModel implements Serializable{
     private List<String> assignmentVisibility;
     private Boolean postManually;
     private Boolean hideInGradebook;
+    // This isn't documented, but returns the LTI resource link ID when the assignment is an LTI assignment.
+    // This is useful for matching assignments to LTI Launches from deep linked assignments.
+    private String ltiContextId;
 
     public Integer getId() {
         return id;
@@ -435,6 +438,14 @@ public class Assignment extends BaseCanvasModel implements Serializable{
 
     public void setHideInGradebook(Boolean hideInGradebook) {
         this.hideInGradebook = hideInGradebook;
+    }
+
+    public String getLtiContextId() {
+        return ltiContextId;
+    }
+
+    public void setLtiContextId(String ltiContextId) {
+        this.ltiContextId = ltiContextId;
     }
 
     public class ExternalToolTagAttribute implements Serializable {
