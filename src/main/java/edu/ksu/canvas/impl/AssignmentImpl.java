@@ -11,6 +11,7 @@ import edu.ksu.canvas.oauth.OauthToken;
 import edu.ksu.canvas.requestOptions.GetSingleAssignmentOptions;
 import edu.ksu.canvas.requestOptions.ListCourseAssignmentsOptions;
 import edu.ksu.canvas.requestOptions.ListUserAssignmentOptions;
+import edu.ksu.canvas.exception.CanvasException;
 
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -73,6 +74,37 @@ public class AssignmentImpl extends BaseImpl<Assignment, AssignmentReader, Assig
             return Optional.empty();
         }
         return responseParser.parseToObject(Assignment.class, response);
+    }
+
+    @Override
+    public Optional<Assignment> deleteAssignment(String courseId, String assignmentId) throws IOException {
+        Map<String, List<String>> postParams = new HashMap<>();
+        postParams.put("event", Collections.singletonList("delete"));
+        String url = buildCanvasUrl("courses/" + courseId + "/assignments/" + assignmentId, Collections.emptyMap());
+        Response response = canvasMessenger.deleteFromCanvas(oauthToken, url, postParams);
+        LOG.debug("response {}", response);
+        int code = response.getResponseCode();
+
+        boolean errorHappened = response.getErrorHappened();
+
+        if (!errorHappened) {
+            switch (code) {
+                case 200:
+                    return responseParser.parseToObject(Assignment.class, response);
+                case 204:
+                case 404: // already deleted, treat as success
+                    return Optional.empty();
+                default:
+                    // fall through to error
+            }
+        }
+
+        String msg = response.getContent();
+        if (msg == null || msg.isBlank()) {
+            msg = "Canvas returned HTTP " + code;
+        }
+
+        throw new CanvasException(msg, url, response);
     }
 
     @Override

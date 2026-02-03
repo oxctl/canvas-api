@@ -26,6 +26,15 @@ public interface AssignmentWriter extends CanvasWriter<Assignment, AssignmentWri
     Optional<Assignment> deleteAssignment(String courseId, Integer assignmentId) throws IOException;
 
     /**
+     * Deletes a specified assignment in canvas. Override allows us to pass assignment IDs that are non-numeric (e.g. "lti_context_id:ab84f579-4442-4d4a-acd8-85c5ec6fd2b6").
+     * @param courseId Course ID of course to delete assignment from
+     * @param assignmentId Assignment ID of assignment to delete
+     * @return The deleted Assignment object as returned by the Canvas API
+     * @throws IOException When there is an error communicating with Canvas
+     */
+    Optional<Assignment> deleteAssignment(String courseId, String assignmentId) throws IOException;
+
+    /**
      * Writes an Assignment object to the Canvas API
      * @param courseId Course ID that this assignment is associated with
      * @param assignment The assignment settings to write to the API
