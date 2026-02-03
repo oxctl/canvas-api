@@ -15,5 +15,7 @@ public interface CanvasReader<T, READERTYPE extends CanvasReader> {
     READERTYPE readAsCanvasUser(String masqueradeAs);
 
     READERTYPE readAsSisUser(String masqueradeAs);
+    
+    READERTYPE readAsLtiUser(String masqueradeAs);
 
 }

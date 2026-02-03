@@ -70,5 +70,18 @@ public class UserManagerUTest extends CanvasTestBase {
         Assert.assertEquals("somestring4",response.get().getName());
         Assert.assertNotNull(response.get().getId());
     }
+    @Test
+    public void testLtiUserMasqueradeCreateUser() throws IOException {
+        User user = new User();
+        String userId = "899123456";
+        user.setName("somestring4");
+        user.setLoginId("somestring4");
+        String url = baseUrl + "/api/v1/accounts/1/users?as_user_id=" + CanvasConstants.MASQUERADE_LTI_USER + ":" + userId;
+        fakeRestClient.addSuccessResponse(url, "SampleJson/CreateUserResponse.json");
+        Optional<User> response = userWriter.writeAsLtiUser(userId).createUser(user);
+        System.out.println(response.toString());
+        Assert.assertEquals("somestring4",response.get().getName());
+        Assert.assertNotNull(response.get().getId());
+    }
 }
 
