@@ -11,7 +11,6 @@ import edu.ksu.canvas.oauth.OauthToken;
 import edu.ksu.canvas.requestOptions.GetSingleAssignmentOptions;
 import edu.ksu.canvas.requestOptions.ListCourseAssignmentsOptions;
 import edu.ksu.canvas.requestOptions.ListUserAssignmentOptions;
-import edu.ksu.canvas.exception.CanvasException;
 
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -64,47 +63,26 @@ public class AssignmentImpl extends BaseImpl<Assignment, AssignmentReader, Assig
 
     @Override
     public Optional<Assignment> deleteAssignment(String courseId, Integer assignmentId) throws IOException {
-        Map<String, List<String>> postParams = new HashMap<>();
-        postParams.put("event", Collections.singletonList("delete"));
-        String createdUrl = buildCanvasUrl("courses/" + courseId + "/assignments/" + assignmentId, Collections.emptyMap());
-        Response response = canvasMessenger.deleteFromCanvas(oauthToken, createdUrl, postParams);
-        LOG.debug("response " + response.toString());
-        if(response.getErrorHappened() || response.getResponseCode() != 200){
-            LOG.debug("Failed to delete assignment, error message: " + response.toString());
-            return Optional.empty();
-        }
-        return responseParser.parseToObject(Assignment.class, response);
+        String url = buildCanvasUrl("courses/" + courseId + "/assignments/" + assignmentId, Collections.emptyMap());
+        return deleteAssignment(url);
     }
 
     @Override
     public Optional<Assignment> deleteAssignment(String courseId, String assignmentId) throws IOException {
+        String url = buildCanvasUrl("courses/" + courseId + "/assignments/" + assignmentId, Collections.emptyMap());
+        return deleteAssignment(url);
+    }
+
+    private Optional<Assignment> deleteAssignment(String url) throws IOException {
         Map<String, List<String>> postParams = new HashMap<>();
         postParams.put("event", Collections.singletonList("delete"));
-        String url = buildCanvasUrl("courses/" + courseId + "/assignments/" + assignmentId, Collections.emptyMap());
         Response response = canvasMessenger.deleteFromCanvas(oauthToken, url, postParams);
         LOG.debug("response {}", response);
-        int code = response.getResponseCode();
-
-        boolean errorHappened = response.getErrorHappened();
-
-        if (!errorHappened) {
-            switch (code) {
-                case 200:
-                    return responseParser.parseToObject(Assignment.class, response);
-                case 204:
-                case 404: // already deleted, treat as success
-                    return Optional.empty();
-                default:
-                    // fall through to error
-            }
+        if(response.getErrorHappened() || response.getResponseCode() != 200){
+            LOG.debug("Failed to delete assignment, error message: {}", response);
+            return Optional.empty();
         }
-
-        String msg = response.getContent();
-        if (msg == null || msg.isBlank()) {
-            msg = "Canvas returned HTTP " + code;
-        }
-
-        throw new CanvasException(msg, url, response);
+        return responseParser.parseToObject(Assignment.class, response);
     }
 
     @Override
