@@ -63,13 +63,23 @@ public class AssignmentImpl extends BaseImpl<Assignment, AssignmentReader, Assig
 
     @Override
     public Optional<Assignment> deleteAssignment(String courseId, Integer assignmentId) throws IOException {
+        String url = buildCanvasUrl("courses/" + courseId + "/assignments/" + assignmentId, Collections.emptyMap());
+        return deleteAssignment(url);
+    }
+
+    @Override
+    public Optional<Assignment> deleteAssignment(String courseId, String assignmentId) throws IOException {
+        String url = buildCanvasUrl("courses/" + courseId + "/assignments/" + assignmentId, Collections.emptyMap());
+        return deleteAssignment(url);
+    }
+
+    private Optional<Assignment> deleteAssignment(String url) throws IOException {
         Map<String, List<String>> postParams = new HashMap<>();
         postParams.put("event", Collections.singletonList("delete"));
-        String createdUrl = buildCanvasUrl("courses/" + courseId + "/assignments/" + assignmentId, Collections.emptyMap());
-        Response response = canvasMessenger.deleteFromCanvas(oauthToken, createdUrl, postParams);
-        LOG.debug("response " + response.toString());
+        Response response = canvasMessenger.deleteFromCanvas(oauthToken, url, postParams);
+        LOG.debug("response {}", response);
         if(response.getErrorHappened() || response.getResponseCode() != 200){
-            LOG.debug("Failed to delete assignment, error message: " + response.toString());
+            LOG.debug("Failed to delete assignment, error message: {}", response);
             return Optional.empty();
         }
         return responseParser.parseToObject(Assignment.class, response);
