@@ -1,7 +1,6 @@
 package edu.ksu.canvas.requestOptions;
 
 import java.util.List;
-import java.util.Objects;
 
 public class GetSingleAssignmentOptions extends BaseOptions {
     
@@ -26,7 +25,10 @@ public class GetSingleAssignmentOptions extends BaseOptions {
     }
 
     public GetSingleAssignmentOptions(String courseId, Integer assignmentId) {
-        this(courseId, Objects.toString(assignmentId, null));
+        if (assignmentId == null) {
+            throw new IllegalArgumentException("Course and assignment IDs are required");
+        }
+        this(courseId, String.valueOf(assignmentId));
     }
 
     public String getCourseId() {
