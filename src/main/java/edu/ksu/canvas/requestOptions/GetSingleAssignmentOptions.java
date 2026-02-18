@@ -25,6 +25,9 @@ public class GetSingleAssignmentOptions extends BaseOptions {
     }
 
     public GetSingleAssignmentOptions(String courseId, Integer assignmentId) {
+        if (assignmentId == null) {
+            throw new IllegalArgumentException("Course and assignment IDs are required");
+        }
         this(courseId, String.valueOf(assignmentId));
     }
 
