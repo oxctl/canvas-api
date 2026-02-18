@@ -5,7 +5,7 @@ import java.util.List;
 public class GetSingleAssignmentOptions extends BaseOptions {
     
     private String courseId;
-    private Integer assignmentId;
+    private String assignmentId;
 
     public enum Include {
         SUBMISSION, ASSIGNMENT_VISIBILITY, OVERRIDES, OBSERVED_USERS;
@@ -16,7 +16,7 @@ public class GetSingleAssignmentOptions extends BaseOptions {
         }
     }
 
-    public GetSingleAssignmentOptions(String courseId, Integer assignmentId) {
+    public GetSingleAssignmentOptions(String courseId, String assignmentId) {
         if(courseId == null || assignmentId == null) {
             throw new IllegalArgumentException("Course and assignment IDs are required");
         }
@@ -24,11 +24,15 @@ public class GetSingleAssignmentOptions extends BaseOptions {
         this.assignmentId = assignmentId;
     }
 
+    public GetSingleAssignmentOptions(String courseId, Integer assignmentId) {
+        this(courseId, String.valueOf(assignmentId));
+    }
+
     public String getCourseId() {
         return courseId;
     }
 
-    public Integer getAssignmentId() {
+    public String getAssignmentId() {
         return assignmentId;
     }
 
