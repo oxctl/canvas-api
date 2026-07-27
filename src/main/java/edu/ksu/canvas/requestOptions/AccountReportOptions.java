@@ -94,6 +94,11 @@ public class AccountReportOptions extends BaseOptions {
         return this;
     }
 
+    public AccountReportOptions pseudonyms(String parameter) {
+        addSingleItem("parameters[pseudonyms]", parameter);
+        return this;
+    }
+
 
     public AccountReportOptions createdBySis(String parameter) {
         addSingleItem("parameters[created_by_sis]", parameter);
